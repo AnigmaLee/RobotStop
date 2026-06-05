@@ -5,13 +5,15 @@ using RobotStopApp.RobotApp.Services;
 
 namespace RobotStopApp.RobotApp.ViewModels;
 
-public sealed class MainWindowViewModel : ViewModelBase
+public sealed class MainWindowViewModel : ViewModelBase, IDisposable
 {
     private static readonly IBrush GoodBrush = new SolidColorBrush(Color.Parse("#2B8A3E"));
     private static readonly IBrush BadBrush = new SolidColorBrush(Color.Parse("#B63A3A"));
 
     private readonly IRobotStatusService _statusService;
     private readonly AsyncCommand _refreshCommand;
+    private readonly CancellationTokenSource _autoRefreshCts = new();
+    private readonly Task _autoRefreshTask;
 
     private string _apiBaseUrl;
     private string _apiKey;
@@ -26,6 +28,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         _apiBaseUrl = settings.ApiBaseUrl;
         _apiKey = settings.ApiKey;
         _refreshCommand = new AsyncCommand(_ => RefreshAsync(), () => !IsBusy);
+        _autoRefreshTask = RunAutoRefreshAsync(_autoRefreshCts.Token);
     }
 
     public string ApiBaseUrl
@@ -114,11 +117,45 @@ public sealed class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private async Task RunAutoRefreshAsync(CancellationToken cancellationToken)
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
+        try
+        {
+            await RefreshAsync(cancellationToken);
+
+            while (await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                await RefreshAsync(cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when app is shutting down.
+        }
+    }
+
     private void OnStatusVisualsChanged()
     {
         RaisePropertyChanged(nameof(ApiConnectedText));
         RaisePropertyChanged(nameof(IsRobotRunOkText));
         RaisePropertyChanged(nameof(ApiConnectedBrush));
         RaisePropertyChanged(nameof(IsRobotRunOkBrush));
+    }
+
+    public void Dispose()
+    {
+        _autoRefreshCts.Cancel();
+        _autoRefreshCts.Dispose();
+
+        try
+        {
+            _autoRefreshTask.GetAwaiter().GetResult();
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when cancellation occurs.
+        }
     }
 }
