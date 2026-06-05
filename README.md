@@ -13,6 +13,19 @@ Robot control solution with a reusable service DLL, an HTTP API host, and two Av
 - `src/RobotStopApp.Client.Ui`: richer desktop API client.
 - `tests/*`: unit/integration test projects.
 
+## Terms (Short Definitions)
+
+- `Client.Ui`: Avalonia desktop client used to manually test API actions (`run`, `stop`, `status`), view state, and inspect request logs.
+- `RobotApp`: Avalonia desktop status monitor that focuses on `API connected` and `isRobotRunOK` with 1-second auto refresh.
+- `RobotStopApp.Api`: ASP.NET Core API host exposing robot control/status endpoints over HTTP.
+- `RobotController`: API controller that implements `/api/robot/run`, `/api/robot/stop`, and `/api/robot/status`.
+- `IRobotController`: Core robot control contract used by the API (`RunAsync`, `StopAsync`, `GetStatus`).
+- `RobotState`: Shared enum describing robot lifecycle (`Idle`, `Running`, `Stopped`, `Faulted`).
+- `RobotStateResponse`: API response model that returns robot state plus a timestamp.
+- `isRobotRunOK`: RobotApp boolean projection; `true` when current API-reported state is `Running`, otherwise `false`.
+- `X-Api-Key`: Optional request header used by clients; authorization is currently disabled at controller level but header plumbing remains.
+- `/health`: Lightweight API endpoint used by clients (especially RobotApp) to verify API reachability before robot operations.
+
 ## Usage
 
 ### Option 1: VS Code (Recommended)
