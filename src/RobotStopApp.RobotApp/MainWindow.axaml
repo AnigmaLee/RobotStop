@@ -1,0 +1,88 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:RobotStopApp.RobotApp.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RobotStopApp.RobotApp.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="760"
+        Height="460"
+        Title="Robot App Status">
+
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#1E5A8A" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="#17466B" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="#17466B" />
+            <Setter Property="BorderBrush" Value="#133B5A" />
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#1F1F1F" />
+            <Setter Property="BorderBrush" Value="#BFB6A8" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Background="#F4F1EA">
+        <Border Margin="20"
+                Padding="20"
+                CornerRadius="16"
+                Background="#FFFFFF"
+                BorderBrush="#D8D2C7"
+                BorderThickness="1">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="14">
+                <TextBlock Text="Robot App"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="#2C2924" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <TextBlock Text="API URL" VerticalAlignment="Center" Foreground="#605A51" />
+                    <TextBox Grid.Column="1" Text="{Binding ApiBaseUrl}" PlaceholderText="http://localhost:5188" />
+                </Grid>
+
+                <Grid Grid.Row="2" ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <TextBlock Text="API Key" VerticalAlignment="Center" Foreground="#605A51" />
+                    <TextBox Grid.Column="1" Text="{Binding ApiKey}" />
+                </Grid>
+
+                <Grid Grid.Row="3" ColumnDefinitions="1*,1*" ColumnSpacing="14">
+                    <Border Padding="12" CornerRadius="10" Background="#F7F5EE" BorderBrush="#DDD6C8" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="API connected" FontWeight="SemiBold" Foreground="#4F4A42" />
+                            <TextBlock Margin="0,6,0,0"
+                                       Text="{Binding ApiConnectedText}"
+                                       FontSize="22"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding ApiConnectedBrush}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Padding="12" CornerRadius="10" Background="#F7F5EE" BorderBrush="#DDD6C8" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="isRobotRunOK" FontWeight="SemiBold" Foreground="#4F4A42" />
+                            <TextBlock Margin="0,6,0,0"
+                                       Text="{Binding IsRobotRunOkText}"
+                                       FontSize="22"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding IsRobotRunOkBrush}" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <StackPanel Grid.Row="4" Spacing="10">
+                    <Button Command="{Binding RefreshCommand}" Content="Check Robot Status" Height="42" />
+                    <TextBlock Text="{Binding Message}" Foreground="#5A544B" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

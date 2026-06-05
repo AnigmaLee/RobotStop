@@ -1,0 +1,90 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "RobotStopApp.Api (HTTP)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/RobotStopApp.Api/bin/Debug/net9.0/RobotStopApp.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/RobotStopApp.Api",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "preLaunchTask": "build-api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5188",
+        "ROBOTSTOPAPP_APIKEY": "dev-local-key-change-me"
+      },
+      "justMyCode": true
+    },
+    {
+      "name": "RobotStopApp.Api (HTTPS)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/RobotStopApp.Api/bin/Debug/net9.0/RobotStopApp.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/RobotStopApp.Api",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "preLaunchTask": "build-api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:7049;http://localhost:5188",
+        "ROBOTSTOPAPP_APIKEY": "dev-local-key-change-me"
+      },
+      "justMyCode": true
+    },
+    {
+      "name": "RobotStopApp.RobotApp",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/RobotStopApp.RobotApp/bin/Debug/net9.0/RobotStopApp.RobotApp.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/RobotStopApp.RobotApp",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "preLaunchTask": "build-robotapp",
+      "justMyCode": true
+    },
+    {
+      "name": "RobotStopApp.Client.Ui",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/RobotStopApp.Client.Ui/bin/Debug/net9.0/RobotStopApp.Client.Ui.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/RobotStopApp.Client.Ui",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "preLaunchTask": "build-client-ui",
+      "justMyCode": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All Apps (API + RobotApp + Client.Ui)",
+      "configurations": [
+        "RobotStopApp.Api (HTTP)",
+        "RobotStopApp.RobotApp",
+        "RobotStopApp.Client.Ui"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Full Stack (API + RobotApp)",
+      "configurations": [
+        "RobotStopApp.Api (HTTP)",
+        "RobotStopApp.RobotApp"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Full Stack (API + Client.Ui)",
+      "configurations": [
+        "RobotStopApp.Api (HTTP)",
+        "RobotStopApp.Client.Ui"
+      ],
+      "stopAll": true
+    }
+  ]
+}

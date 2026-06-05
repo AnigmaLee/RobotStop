@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using RobotStopApp.Service.Robot;
 
 namespace RobotStopApp.Api.Robot;
 

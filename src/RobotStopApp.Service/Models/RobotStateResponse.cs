@@ -1,6 +1,6 @@
-using RobotStopApp.Api.Robot;
+using RobotStopApp.Service.Robot;
 
-namespace RobotStopApp.Api.Models;
+namespace RobotStopApp.Service.Models;
 
 public record RobotStateResponse(RobotState State, DateTimeOffset Timestamp)
 {

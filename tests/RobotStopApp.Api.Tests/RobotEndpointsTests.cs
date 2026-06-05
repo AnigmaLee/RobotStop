@@ -3,8 +3,9 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RobotStopApp.Api.Models;
 using RobotStopApp.Api.Robot;
+using RobotStopApp.Service.Models;
+using RobotStopApp.Service.Robot;
 using Xunit;
 
 namespace RobotStopApp.Api.Tests;

@@ -1,0 +1,89 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-api",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "src/RobotStopApp.Api/RobotStopApp.Api.csproj",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "build-robotapp",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "src/RobotStopApp.RobotApp/RobotStopApp.RobotApp.csproj",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "build-client-ui",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "src/RobotStopApp.Client.Ui/RobotStopApp.Client.Ui.csproj",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "build-all",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "RobotStopApp.sln",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "test-all",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "RobotStopApp.sln",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "build-all"
+      ]
+    },
+    {
+      "label": "clean-all",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "clean",
+        "RobotStopApp.sln"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

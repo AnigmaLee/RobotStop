@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.OpenApi.Models;
 using RobotStopApp.Api.Auth;
-using RobotStopApp.Api.Models;
 using RobotStopApp.Api.Robot;
+using RobotStopApp.Service.Models;
+using RobotStopApp.Service.Robot;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,7 +1,7 @@
-# RobotStopApp API Documentation for Client Teams
+# RobotStopApp Integration Documentation
 
 ## 1. Purpose
-RobotStopApp is a server-side REST API used to control robot execution state from client applications.
+RobotStopApp provides a reusable service DLL for robot control contracts, with an optional HTTP API host for out-of-process consumers.
 
 Current version supports:
 - Start robot run command
@@ -9,14 +9,18 @@ Current version supports:
 - Read current robot status
 - Health probe
 
-## 2. Environment and Base URL
+Integration modes:
+- Direct DLL consumption via `src/RobotStopApp.Service`
+- HTTP transport via `src/RobotStopApp.Api`
+
+## 2. HTTP Host Environment and Base URL
 Default local development URL:
 - http://localhost:5188
 
 If HTTPS profile is used:
 - https://localhost:7049
 
-## 3. Authentication
+## 3. HTTP Authentication
 Robot command endpoints require API key authentication.
 
 Header required:
@@ -139,7 +143,7 @@ stateDiagram-v2
     Running --> Running: POST /run -> 409 Conflict
 ```
 
-## 8. Client Integration Guidance
+## 8. Consumer Integration Guidance
 - Treat 401 as authentication/configuration issue (header missing, wrong key, or server key not configured).
 - Treat 409 on run as a business-state conflict; do not retry immediately without checking status.
 - On network timeout or 5xx, retry with backoff if your workflow tolerates duplicates.
@@ -155,6 +159,38 @@ Use Authorize and set:
 Then test run/stop/status directly from UI.
 
 ## 10. Current Implementation Scope
-Important for client teams:
+Important for consumers:
 - Robot control layer is currently a stubbed in-memory controller.
 - API contract is stable for integration, but hardware-level behavior will be connected later via real robot driver.
+
+## 11. Shared DLL Consumption (Third-Party Apps)
+
+Shared contracts are available in:
+- `src/RobotStopApp.Service`
+
+Key types:
+- `RobotStopApp.Service.Robot.IRobotController`
+- `RobotStopApp.Service.Robot.RobotState`
+- `RobotStopApp.Service.Robot.InvalidRobotTransitionException`
+- `RobotStopApp.Service.Models.RobotStateResponse`
+- `RobotStopApp.Service.Models.ErrorResponse`
+
+Third-party apps can reference the DLL directly to consume contract types.
+Use the HTTP API host (`src/RobotStopApp.Api`) when out-of-process communication is required.
+
+## 12. Robot App (Simple Status Consumer)
+
+An additional Avalonia Robot App consumer is available:
+
+```powershell
+dotnet run --project src/RobotStopApp.RobotApp
+```
+
+This app focuses on two indicators:
+- `API connected`
+- `isRobotRunOK`
+
+Configuration:
+- `src/RobotStopApp.RobotApp/appsettings.json`
+- `RobotApp:ApiBaseUrl`
+- `RobotApp:ApiKey`

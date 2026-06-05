@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RobotStopApp.Api.Models;
-using RobotStopApp.Api.Robot;
+using RobotStopApp.Service.Models;
+using RobotStopApp.Service.Robot;
 
 namespace RobotStopApp.Api.Controllers;
 
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 [Route("api/robot")]
 [Produces("application/json")]
 public class RobotController : ControllerBase

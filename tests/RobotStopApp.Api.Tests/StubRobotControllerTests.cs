@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using RobotStopApp.Api.Robot;
+using RobotStopApp.Service.Robot;
 using Xunit;
 
 namespace RobotStopApp.Api.Tests;

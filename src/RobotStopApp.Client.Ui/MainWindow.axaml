@@ -1,0 +1,154 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:RobotStopApp.Client.Ui.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RobotStopApp.Client.Ui.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="980"
+        Height="680"
+        MinWidth="820"
+        MinHeight="600"
+        Title="RobotStop API Client">
+
+    <Window.Styles>
+        <Style Selector="Border.panel">
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="18" />
+            <Setter Property="Background" Value="#F8F5EE" />
+            <Setter Property="BorderBrush" Value="#D7D2C8" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="Button.action">
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Background" Value="#1C6E5A" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="#1C6E5A" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="Button.action:hover">
+            <Setter Property="Background" Value="#165A4A" />
+            <Setter Property="BorderBrush" Value="#165A4A" />
+        </Style>
+        <Style Selector="Button.subtle">
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Background" Value="#ECE5D8" />
+            <Setter Property="Foreground" Value="#2D2A26" />
+            <Setter Property="BorderBrush" Value="#D3C9B8" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <Border Background="#EDE8DC" />
+        <Grid Margin="18" RowDefinitions="Auto,*,Auto" RowSpacing="14">
+            <Border Classes="panel">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <StackPanel>
+                        <TextBlock Text="RobotStop API Test Console"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="#2D2A26" />
+                        <TextBlock Margin="0,6,0,0"
+                                   Text="Trigger robot commands, inspect current state, and validate API auth/behavior quickly."
+                                   Foreground="#5C574F" />
+                    </StackPanel>
+                    <Border Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Padding="14,8"
+                            CornerRadius="999"
+                            Background="{Binding StateBrush}">
+                        <TextBlock Text="{Binding StateLabel}"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="#FFFFFF" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" ColumnDefinitions="1.2*,1.8*" ColumnSpacing="14">
+                <Border Classes="panel">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Connection"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2D2A26" />
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="API Base URL" Foreground="#5A544A" />
+                            <TextBox Text="{Binding BaseUrl}"
+                                     PlaceholderText="http://localhost:5188" />
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="API Key (X-Api-Key)" Foreground="#5A544A" />
+                            <TextBox Text="{Binding ApiKey}" />
+                        </StackPanel>
+
+                        <Separator Margin="0,4" />
+
+                        <TextBlock Text="Actions"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2D2A26" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8" RowDefinitions="Auto,Auto" RowSpacing="8">
+                            <Button Classes="action" Command="{Binding RunCommand}" Content="Run Robot" />
+                            <Button Classes="action" Grid.Column="1" Command="{Binding StopCommand}" Content="Stop Robot" />
+                            <Button Classes="subtle" Grid.Row="1" Command="{Binding StatusCommand}" Content="Get Status" />
+                            <Button Classes="subtle" Grid.Row="1" Grid.Column="1" Command="{Binding CancelCommand}" Content="Cancel" />
+                        </Grid>
+
+                        <Border Margin="0,8,0,0" Padding="12" Background="#FFF5E9" BorderBrush="#EACB9B" BorderThickness="1" CornerRadius="10">
+                            <StackPanel>
+                                <TextBlock Text="Status"
+                                           FontWeight="SemiBold"
+                                           Foreground="#7A4C12" />
+                                <TextBlock Margin="0,6,0,0"
+                                           Text="{Binding StatusMessage}"
+                                           TextWrapping="Wrap"
+                                           Foreground="#5A3A14" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="panel">
+                    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
+                        <TextBlock Text="Latest Robot State"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2D2A26" />
+
+                        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <TextBlock Text="Timestamp:" VerticalAlignment="Center" Foreground="#5A544A" />
+                            <TextBlock Grid.Column="1" Text="{Binding TimestampText}" FontWeight="Medium" Foreground="#2D2A26" />
+                        </Grid>
+
+                        <StackPanel Grid.Row="2" Spacing="8">
+                            <TextBlock Text="Request Log"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="#2D2A26" />
+
+                            <Border BorderBrush="#DDD4C6" BorderThickness="1" CornerRadius="10" Background="#FFFFFF" Padding="4">
+                                <ListBox ItemsSource="{Binding RequestLog}" Height="400" />
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="2" Padding="8,4" Background="#DFD7C8" CornerRadius="8">
+                <TextBlock Text="Tip: Start API with dotnet run --project src/RobotStopApp.Api before sending requests."
+                           HorizontalAlignment="Center"
+                           Foreground="#564C3E" />
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

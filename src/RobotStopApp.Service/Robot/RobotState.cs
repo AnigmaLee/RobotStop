@@ -1,4 +1,4 @@
-namespace RobotStopApp.Api.Robot;
+namespace RobotStopApp.Service.Robot;
 
 public enum RobotState
 {
