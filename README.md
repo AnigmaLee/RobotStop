@@ -1,8 +1,9 @@
 # RobotStopApp
 
-Robot control solution with a reusable service DLL, an HTTP API host, and two Avalonia desktop consumers:
+Robot control solution with a reusable service DLL, an HTTP API host, and desktop consumers across Avalonia and WinForms:
 
 - `RobotApp`: lightweight status monitor (`API connected`, `isRobotRunOK`) with auto-refresh every 1 second.
+- `RobotApp.WinForms`: Windows Forms status monitor (`API connected`, `isRobotRunOK`) with auto-refresh every 1 second.
 - `Client.Ui`: richer API test console for run/stop/status actions and request logs.
 
 ## Project Layout
@@ -10,6 +11,7 @@ Robot control solution with a reusable service DLL, an HTTP API host, and two Av
 - `src/RobotStopApp.Service`: shared contracts and models.
 - `src/RobotStopApp.Api`: ASP.NET Core API host.
 - `src/RobotStopApp.RobotApp`: simple status-oriented desktop app.
+- `src/RobotStopApp.RobotApp.WinForms`: Windows Forms status-oriented desktop app.
 - `src/RobotStopApp.Client.Ui`: richer desktop API client.
 - `tests/*`: unit/integration test projects.
 
@@ -17,6 +19,7 @@ Robot control solution with a reusable service DLL, an HTTP API host, and two Av
 
 - `Client.Ui`: Avalonia desktop client used to manually test API actions (`run`, `stop`, `status`), view state, and inspect request logs.
 - `RobotApp`: Avalonia desktop status monitor that focuses on `API connected` and `isRobotRunOK` with 1-second auto refresh.
+- `RobotApp.WinForms`: Windows Forms desktop status monitor that focuses on `API connected` and `isRobotRunOK` with 1-second auto refresh.
 - `RobotStopApp.Api`: ASP.NET Core API host exposing robot control/status endpoints over HTTP.
 - `RobotController`: API controller that implements `/api/robot/run`, `/api/robot/stop`, and `/api/robot/status`.
 - `IRobotController`: Core robot control contract used by the API (`RunAsync`, `StopAsync`, `GetStatus`).
@@ -32,6 +35,8 @@ Robot control solution with a reusable service DLL, an HTTP API host, and two Av
 
 Use Run and Debug with these profiles:
 
+- `All Apps (API HTTPS + RobotApp.winform + Client.Ui)`
+- `All Apps (API + RobotApp.winform + Client.Ui)`
 - `All Apps (API + RobotApp + Client.Ui)`
 - `Full Stack (API + RobotApp)`
 - `Full Stack (API + Client.Ui)`
@@ -45,6 +50,7 @@ From repository root, start apps in separate terminals:
 ```powershell
 dotnet run --project src/RobotStopApp.Api
 dotnet run --project src/RobotStopApp.RobotApp
+dotnet run --project src/RobotStopApp.RobotApp.WinForms
 dotnet run --project src/RobotStopApp.Client.Ui
 ```
 
@@ -122,6 +128,24 @@ sequenceDiagram
 5. UI binding in `src/RobotStopApp.RobotApp/MainWindow.axaml`:
 	- `Text="{Binding IsRobotRunOkText}"`
 	- `Foreground="{Binding IsRobotRunOkBrush}"`
+
+### How `RobotApp.WinForms` Uses the API
+
+1. Loads settings from `src/RobotStopApp.RobotApp.WinForms/appsettings.json` (`RobotApp:ApiBaseUrl`, `RobotApp:ApiKey`).
+2. Startup setup in `src/RobotStopApp.RobotApp.WinForms/Program.cs`:
+	- Builds configuration from `appsettings.json`.
+	- Creates `HttpClient` and `RobotApiClient`.
+	- Starts `MainForm` with loaded settings.
+3. API call implementation in `src/RobotStopApp.RobotApp.WinForms/Services/RobotApiClient.cs`:
+	- Calls `GET /health` to verify API connectivity.
+	- Calls `GET /api/robot/status` to fetch robot state.
+	- Sends `X-Api-Key` when configured.
+	- Maps `RobotState.Running` to `IsRobotRunOk = true`.
+	- Handles unauthorized and non-success responses with user-friendly messages.
+4. UI orchestration in `src/RobotStopApp.RobotApp.WinForms/MainForm.cs`:
+	- Runs initial status refresh on form show.
+	- Uses a 1-second timer for automatic refresh.
+	- Updates connectivity/state labels and message text.
 
 ### How `Client.Ui` Uses the API
 
