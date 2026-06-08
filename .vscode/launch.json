@@ -48,6 +48,18 @@
       "justMyCode": true
     },
     {
+      "name": "RobotStopApp.RobotApp.WinForms",
+      "type": "clr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/RobotStopApp.RobotApp.WinForms/bin/Debug/net48/RobotStopApp.RobotApp.WinForms.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/RobotStopApp.RobotApp.WinForms",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "preLaunchTask": "build-all",
+      "justMyCode": true
+    },
+    {
       "name": "RobotStopApp.Client.Ui",
       "type": "coreclr",
       "request": "launch",
@@ -61,6 +73,24 @@
     }
   ],
   "compounds": [
+    {
+      "name": "All Apps (API HTTPS + RobotApp.winform + Client.Ui)",
+      "configurations": [
+        "RobotStopApp.Api (HTTPS)",
+        "RobotStopApp.RobotApp.WinForms",
+        "RobotStopApp.Client.Ui"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "All Apps (API + RobotApp.winform + Client.Ui)",
+      "configurations": [
+        "RobotStopApp.Api (HTTP)",
+        "RobotStopApp.RobotApp.WinForms",
+        "RobotStopApp.Client.Ui"
+      ],
+      "stopAll": true
+    },
     {
       "name": "All Apps (API + RobotApp + Client.Ui)",
       "configurations": [
